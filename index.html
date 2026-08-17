@@ -344,12 +344,66 @@ justify-content:space-between;
 gap:10px;
 }
 
+.cart-row-left{
+display:flex;
+align-items:center;
+gap:8px;
+min-width:0;
+}
+
+.cart-row-right{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.qty-controls{
+display:flex;
+align-items:center;
+gap:5px;
+}
+
+.qty-button{
+border:0;
+background:#7950a9;
+color:white;
+border-radius:8px;
+width:28px;
+height:28px;
+font:700 16px Fredoka;
+cursor:pointer;
+}
+
+.qty-number{
+min-width:24px;
+text-align:center;
+font-weight:700;
+}
+
 .total-row{
 border-top:3px dashed #c99bd9;
 padding-top:13px;
 display:flex;
 justify-content:space-between;
 font-size:21px;
+}
+
+.coupon-row{
+margin-top:10px;
+padding:10px;
+background:#ddf9e6;
+border-radius:10px;
+font-weight:700;
+color:#269553;
+}
+
+.final-total-row{
+display:flex;
+justify-content:space-between;
+margin-top:10px;
+font-size:22px;
+color:#f04d99;
+font-weight:700;
 }
 
 .locked,
@@ -536,7 +590,7 @@ Hassan's<br>
 </h1>
 
 <p>
-24 exclusive birthday privileges • available for ONE DAY ONLY!!!
+i love you so much birthday boy 💗
 </p>
 
 <div class="pills">
@@ -557,7 +611,7 @@ Hassan's<br>
 Click any item to see what you're buying, then add it to your cart!
 
 <em>
-You MUST have <strong>ALL 24 ITEMS</strong> in your cart to unlock checkout.
+You can pick any quantities you want! You just need <strong>24 TOTAL THINGS</strong> in your cart to unlock checkout.
 </em>
 
 </div>
@@ -599,11 +653,12 @@ yes, these are somehow real products
 <h2>🎀 tiny birthday shop rules 🎀</h2>
 
 <p>
-All 24 items are one-time birthday privileges.
+All items are only good within one month of your birthday.
 Purchases are final because this is a very serious birthday business.
 </p>
 
 </div>
+
 
 </main>
 
@@ -677,13 +732,20 @@ $<span id="cartPopupTotal">0.00</span>
 
 </div>
 
+<div id="couponRow" class="coupon-row hidden"></div>
+
+<div class="final-total-row">
+<span>YOU PAY</span>
+<strong>$<span id="cartFinalTotal">0.00</span></strong>
+</div>
+
 
 <div id="lockedCheckout" class="locked">
 
 🔒 CHECKOUT LOCKED
 
 <small>
-You need ALL 24 birthday items in your cart!
+You need 24 total things in your cart to unlock checkout!
 </small>
 
 </div>
@@ -696,7 +758,7 @@ You need ALL 24 birthday items in your cart!
 </h3>
 
 <p>
-YOU GOT ALL 24!!!
+YOU GOT ALL 24 THINGS!!!
 </p>
 
 <a
@@ -749,7 +811,7 @@ HASSAN!!!
 </h2>
 
 <p>
-🎉 YOU UNLOCKED ALL 24 BIRTHDAY TREASURES 🎉
+🎉 YOU UNLOCKED 24 BIRTHDAY TREASURES 🎉
 </p>
 
 <div style="font-size:30px;margin:15px">
@@ -987,7 +1049,7 @@ const PAYPAL_LINK =
 ===================================================== */
 
 
-let cart = new Set();
+let cart = {};
 
 
 
@@ -999,6 +1061,26 @@ document.getElementById("products");
 function money(number){
 
 return number.toFixed(2);
+
+}
+
+
+
+function cartCountTotal(){
+
+return Object.values(cart).reduce((sum, quantity)=>sum + quantity, 0);
+
+}
+
+
+
+function cartSubtotal(){
+
+return Object.entries(cart).reduce((sum,[id,quantity])=>{
+
+return sum + PRODUCTS[Number(id)-1].price * quantity;
+
+},0);
 
 }
 
@@ -1058,27 +1140,45 @@ productsContainer.appendChild(card);
 
 function updateCart(){
 
-let total=0;
-
-
-cart.forEach(id=>{
-
-total += PRODUCTS[id-1].price;
-
-});
+const itemCount = cartCountTotal();
+const subtotal = cartSubtotal();
+const finalTotal = Math.min(subtotal,24);
+const couponAmount = Math.max(0,subtotal-24);
 
 
 document.getElementById("cartCount").textContent =
-cart.size;
+itemCount;
 
 
 document.getElementById("cartTotal").textContent =
-money(total);
+money(subtotal);
 
 
 document.getElementById("cartPopupTotal").textContent =
-money(total);
+money(subtotal);
 
+
+document.getElementById("cartFinalTotal").textContent =
+money(finalTotal);
+
+
+const couponRow =
+document.getElementById("couponRow");
+
+if(couponAmount>0){
+
+couponRow.classList.remove("hidden");
+
+couponRow.textContent =
+`🎟️ BIRTHDAY COUPON: -$${money(couponAmount)} • Your total is capped at $24.00!`;
+
+}else{
+
+couponRow.classList.add("hidden");
+
+couponRow.textContent = "";
+
+}
 
 
 const locked =
@@ -1089,14 +1189,14 @@ const unlocked =
 document.getElementById("unlockedCheckout");
 
 
-if(cart.size===24){
+if(itemCount===24){
 
 locked.classList.add("hidden");
 
 unlocked.classList.remove("hidden");
 
 document.getElementById("cartMessage").textContent =
-"🎉 All 24 items are in the cart!";
+"🎉 You have exactly 24 things in the cart!";
 
 }else{
 
@@ -1105,10 +1205,9 @@ locked.classList.remove("hidden");
 unlocked.classList.add("hidden");
 
 document.getElementById("cartMessage").textContent =
-`You have ${cart.size}/24 items. You need ALL 24 to unlock checkout!`;
+`You have ${itemCount}/24 things. Add ${24-itemCount} more to unlock checkout!`;
 
 }
-
 
 
 const paypal =
@@ -1118,7 +1217,6 @@ document.getElementById("paypalButton");
 paypal.href=PAYPAL_LINK;
 
 
-
 const cartItems =
 document.getElementById("cartItems");
 
@@ -1126,10 +1224,10 @@ document.getElementById("cartItems");
 cartItems.innerHTML="";
 
 
-cart.forEach(id=>{
+Object.entries(cart).forEach(([id,quantity])=>{
 
 const product =
-PRODUCTS[id-1];
+PRODUCTS[Number(id)-1];
 
 
 const row =
@@ -1140,14 +1238,26 @@ row.className="cart-row";
 
 row.innerHTML=`
 
+<div class="cart-row-left">
 <span>
 ${product.icon}
 ${product.name}
 </span>
+</div>
+
+<div class="cart-row-right">
+
+<div class="qty-controls">
+<button class="qty-button" data-action="decrease" data-id="${product.id}">−</button>
+<span class="qty-number">${quantity}</span>
+<button class="qty-button" data-action="increase" data-id="${product.id}">+</button>
+</div>
 
 <strong>
-$${money(product.price)}
+$${money(product.price * quantity)}
 </strong>
+
+</div>
 
 `;
 
@@ -1196,15 +1306,20 @@ const button =
 document.getElementById("addToCartButton");
 
 
-if(cart.has(id)){
+if(product.id===24 && cart[24]){
 
 button.textContent =
 "ALREADY IN CART ✓";
 
+}else if(cartCountTotal()>=24){
+
+button.textContent =
+"CART IS FULL ✓";
+
 }else{
 
 button.textContent =
-"ADD TO CART 🛒";
+"ADD 1 TO CART 🛒";
 
 }
 
@@ -1212,9 +1327,21 @@ button.textContent =
 
 button.onclick=function(){
 
-if(!cart.has(id)){
+const currentCount = cartCountTotal();
 
-cart.add(id);
+if(currentCount>=24){
+
+return;
+
+}
+
+if(product.id===24 && cart[24]){
+
+return;
+
+}
+
+cart[id] = (cart[id] || 0) + 1;
 
 updateCart();
 
@@ -1224,11 +1351,9 @@ document
 .classList.remove("open");
 
 
-if(cart.size===24){
+if(cartCountTotal()===24){
 
 birthdayCelebration();
-
-}
 
 }
 
@@ -1353,6 +1478,55 @@ updateCart();
 document
 .getElementById("cartOverlay")
 .classList.add("open");
+
+}
+);
+
+
+
+/* =====================================================
+   CART QUANTITY CONTROLS
+===================================================== */
+
+
+document
+.getElementById("cartItems")
+.addEventListener(
+"click",
+function(event){
+
+const button = event.target.closest(".qty-button");
+
+if(!button)return;
+
+const id = Number(button.dataset.id);
+const action = button.dataset.action;
+
+if(action==="increase"){
+
+if(cartCountTotal()<24){
+
+cart[id] = (cart[id] || 0) + 1;
+
+}
+
+}else if(action==="decrease"){
+
+if(cart[id]){
+
+cart[id]--;
+
+if(cart[id]<=0){
+
+delete cart[id];
+
+}
+
+}
+
+}
+
+updateCart();
 
 }
 );
