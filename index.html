@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Hassan's Birthday Shop 🎂</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:"Fredoka",sans-serif;
+background:#fff7fc;
+color:#4d3157;
+overflow-x:hidden;
+}
+
+body:before{
+content:"";
+position:fixed;
+inset:0;
+pointer-events:none;
+opacity:.18;
+background-image:radial-gradient(#ff70b2 1px,transparent 1px);
+background-size:18px 18px;
+z-index:-1;
+}
+
+.ticker{
+background:#ff59a7;
+color:white;
+text-align:center;
+padding:10px;
+font-weight:700;
+letter-spacing:1px;
+white-space:nowrap;
+overflow:hidden;
+}
+
+.hero{
+text-align:center;
+position:relative;
+padding:42px 18px 35px;
+background:linear-gradient(135deg,#ffd4ea,#d8f2ff,#fff0a4);
+border-bottom:5px dashed white;
+box-shadow:0 5px #e9a7ca;
+}
+
+.cake{
+font-size:58px;
+}
+
+.hero h1{
+font-family:Pacifico,cursive;
+font-size:clamp(48px,9vw,82px);
+line-height:.95;
+color:#7650a5;
+text-shadow:4px 4px white;
+margin:5px 0 15px;
+}
+
+.hero h1 span{
+color:#f04d99;
+}
+
+.hero p{
+font-size:19px;
+font-weight:600;
+}
+
+.pills{
+display:flex;
+justify-content:center;
+gap:8px;
+flex-wrap:wrap;
+}
+
+.pills span{
+background:white;
+border:2px solid #8b60b5;
+border-radius:30px;
+padding:7px 12px;
+box-shadow:3px 3px #d9a4e8;
+}
+
+.balloon{
+position:absolute;
+font-size:65px;
+animation:float 3s ease-in-out infinite;
+}
+
+.left{
+left:6%;
+top:45px;
+}
+
+.right{
+right:6%;
+top:60px;
+animation-delay:1s;
+}
+
+@keyframes float{
+50%{
+transform:translateY(-12px) rotate(4deg);
+}
+}
+
+main{
+max-width:1200px;
+margin:auto;
+padding:25px 18px 60px;
+}
+
+.notice{
+background:white;
+border:3px solid #9062b8;
+border-radius:20px;
+padding:18px;
+text-align:center;
+box-shadow:5px 5px #deb0e5;
+margin-bottom:28px;
+}
+
+.notice em{
+display:block;
+margin-top:8px;
+color:#ec4c96;
+font-style:normal;
+}
+
+.shop-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.shop-top h2{
+margin:0;
+font-size:32px;
+}
+
+.shop-top small{
+color:#9c7aa5;
+}
+
+#cartButton{
+background:white;
+border:3px solid #704696;
+border-radius:15px;
+padding:12px 16px;
+font:700 16px Fredoka;
+box-shadow:4px 4px #cba0dd;
+cursor:pointer;
+}
+
+#cartButton b{
+background:#ff59a7;
+color:white;
+border-radius:50px;
+padding:3px 8px;
+}
+
+#products{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:18px;
+}
+
+.product{
+background:white;
+border:3px solid #9567bc;
+border-radius:20px;
+padding:14px;
+box-shadow:5px 5px #e5b5d5;
+cursor:pointer;
+transition:.15s;
+}
+
+.product:hover{
+transform:translateY(-5px) rotate(-.5deg);
+box-shadow:7px 9px #e5b5d5;
+}
+
+.product-icon{
+height:120px;
+border-radius:15px;
+background:linear-gradient(135deg,#fff0f8,#e6f7ff);
+border:2px dashed #ef8dbb;
+display:grid;
+place-items:center;
+font-size:65px;
+}
+
+.product-number{
+color:#a27bad;
+font-size:12px;
+margin-top:10px;
+}
+
+.product h3{
+margin:4px 0 10px;
+line-height:1.05;
+}
+
+.product-bottom{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.price{
+color:#f04d99;
+font-size:22px;
+font-weight:700;
+}
+
+.view-button{
+border:0;
+background:#7950a9;
+color:white;
+border-radius:10px;
+padding:8px 10px;
+font-weight:700;
+cursor:pointer;
+}
+
+.rules{
+margin-top:35px;
+background:#fff1a6;
+border:3px solid #d6aa35;
+border-radius:20px;
+text-align:center;
+padding:18px;
+}
+
+footer{
+text-align:center;
+background:#7950a9;
+color:white;
+padding:25px;
+}
+
+.overlay{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(67,32,77,.6);
+z-index:20;
+place-items:center;
+padding:18px;
+}
+
+.overlay.open{
+display:grid;
+}
+
+.popup{
+width:min(500px,100%);
+max-height:90vh;
+overflow-y:auto;
+background:#fffaff;
+border:4px solid #8b5db2;
+border-radius:26px;
+box-shadow:9px 9px #f28ab8;
+padding:28px;
+text-align:center;
+position:relative;
+}
+
+.close{
+position:absolute;
+right:12px;
+top:9px;
+border:0;
+background:#ffe0ef;
+border-radius:50%;
+width:35px;
+height:35px;
+font-size:25px;
+cursor:pointer;
+}
+
+.popup-icon{
+font-size:75px;
+}
+
+.number{
+color:#a27bad;
+font-size:13px;
+font-weight:700;
+}
+
+.popup h2{
+font-size:30px;
+margin:7px;
+}
+
+.popup-price{
+color:#f04d99;
+font-size:24px;
+font-weight:700;
+}
+
+.popup p{
+font-size:17px;
+line-height:1.5;
+}
+
+.pink-button{
+border:0;
+background:#ff59a7;
+color:white;
+border-radius:14px;
+padding:14px 20px;
+font:700 17px Fredoka;
+box-shadow:4px 4px #c03e7f;
+cursor:pointer;
+}
+
+#cartItems{
+max-height:280px;
+overflow-y:auto;
+text-align:left;
+margin:15px 0;
+}
+
+.cart-row{
+background:#fff0f8;
+padding:9px;
+border-radius:10px;
+margin:5px 0;
+display:flex;
+justify-content:space-between;
+gap:10px;
+}
+
+.total-row{
+border-top:3px dashed #c99bd9;
+padding-top:13px;
+display:flex;
+justify-content:space-between;
+font-size:21px;
+}
+
+.locked,
+.unlocked{
+margin-top:16px;
+border-radius:15px;
+padding:16px;
+font-weight:700;
+}
+
+.locked{
+background:#eee8f1;
+}
+
+.locked small{
+display:block;
+margin-top:5px;
+}
+
+.unlocked{
+background:#ddf9e6;
+}
+
+.unlocked h3{
+color:#269553;
+}
+
+.paypal-button{
+display:inline-block;
+background:#1677c8;
+color:white;
+text-decoration:none;
+border-radius:12px;
+padding:13px 20px;
+font-weight:700;
+}
+
+.celebration{
+position:fixed;
+inset:0;
+background:linear-gradient(135deg,#ff7eb8,#9064c8,#62cde8);
+z-index:50;
+display:grid;
+place-items:center;
+overflow:hidden;
+}
+
+.celebration-card{
+background:white;
+border:6px solid #fff0a3;
+outline:4px solid #8b4db1;
+border-radius:30px;
+width:min(760px,92%);
+padding:35px 18px;
+text-align:center;
+box-shadow:12px 12px rgba(75,36,80,.3);
+position:relative;
+z-index:2;
+}
+
+.balloons-big{
+font-size:55px;
+}
+
+.big-cake{
+font-size:75px;
+}
+
+.celebration-card h2{
+font-family:Pacifico,cursive;
+font-size:clamp(48px,10vw,90px);
+line-height:.9;
+color:#7950a9;
+text-shadow:4px 4px #ffd2e9;
+margin:8px;
+}
+
+.celebration-card h2 span{
+color:#ff4e9b;
+}
+
+.celebration-card p{
+font-size:21px;
+font-weight:700;
+}
+
+.celebration-card button{
+border:0;
+background:#ff59a7;
+color:white;
+border-radius:14px;
+padding:14px 20px;
+font:700 17px Fredoka;
+cursor:pointer;
+box-shadow:4px 4px #c03e7f;
+}
+
+.confetti-piece{
+position:absolute;
+top:-40px;
+font-size:25px;
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(720deg);
+}
+}
+
+.hidden{
+display:none!important;
+}
+
+@media(max-width:900px){
+
+#products{
+grid-template-columns:repeat(3,1fr);
+}
+
+}
+
+@media(max-width:650px){
+
+#products{
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+}
+
+.product-icon{
+height:95px;
+font-size:52px;
+}
+
+.product h3{
+font-size:16px;
+}
+
+.shop-top{
+flex-direction:column;
+align-items:flex-start;
+gap:10px;
+}
+
+#cartButton{
+width:100%;
+}
+
+.balloon{
+font-size:42px;
+}
+
+}
+
+@media(max-width:390px){
+
+#products{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<div class="ticker">
+🎈 HAPPY BIRTHDAY HASSAN 🎈 ✦ 24 SPECIAL BIRTHDAY ITEMS ✦ 🎈 HAPPY BIRTHDAY HASSAN 🎈
+</div>
+
+
+<header class="hero">
+
+<div class="balloon left">🎈</div>
+<div class="balloon right">🎈</div>
+
+<div class="cake">🎂</div>
+
+<h1>
+Hassan's<br>
+<span>Birthday Shop</span>
+</h1>
+
+<p>
+24 exclusive birthday privileges • available for ONE DAY ONLY!!!
+</p>
+
+<div class="pills">
+<span>🎉 birthday edition</span>
+<span>💗 made just for you</span>
+<span>🛒 24 items to unlock</span>
+</div>
+
+</header>
+
+
+<main>
+
+
+<div class="notice">
+
+🛍️ <strong>HOW IT WORKS:</strong>
+Click any item to see what you're buying, then add it to your cart!
+
+<em>
+You MUST have <strong>ALL 24 ITEMS</strong> in your cart to unlock checkout.
+</em>
+
+</div>
+
+
+<div class="shop-top">
+
+<div>
+
+<h2>🎁 Birthday Products</h2>
+
+<small>
+yes, these are somehow real products
+</small>
+
+</div>
+
+
+<button id="cartButton">
+
+🛒 CART
+
+<b>
+<span id="cartCount">0</span>/24
+</b>
+
+· $<span id="cartTotal">0.00</span>
+
+</button>
+
+</div>
+
+
+<section id="products"></section>
+
+
+<div class="rules">
+
+<h2>🎀 tiny birthday shop rules 🎀</h2>
+
+<p>
+All 24 items are one-time birthday privileges.
+Purchases are final because this is a very serious birthday business.
+</p>
+
+</div>
+
+</main>
+
+
+<footer>
+
+made with an unreasonable amount of birthday spirit 💗
+• Hassan's Birthday Shop © 2026
+
+</footer>
+
+
+
+<!-- PRODUCT POPUP -->
+
+<div class="overlay" id="productOverlay">
+
+<div class="popup">
+
+<button class="close" id="closeProduct">
+×
+</button>
+
+<div id="popupIcon" class="popup-icon"></div>
+
+<div id="popupNumber" class="number"></div>
+
+<h2 id="popupTitle"></h2>
+
+<div id="popupPrice" class="popup-price"></div>
+
+<p id="popupDescription"></p>
+
+<button id="addToCartButton" class="pink-button">
+ADD TO CART 🛒
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- CART -->
+
+<div class="overlay" id="cartOverlay">
+
+<div class="popup">
+
+<button class="close" id="closeCart">
+×
+</button>
+
+<div class="popup-icon">
+🛒
+</div>
+
+<h2>Your Birthday Cart</h2>
+
+<p id="cartMessage"></p>
+
+<div id="cartItems"></div>
+
+<div class="total-row">
+
+<span>TOTAL</span>
+
+<strong>
+$<span id="cartPopupTotal">0.00</span>
+</strong>
+
+</div>
+
+
+<div id="lockedCheckout" class="locked">
+
+🔒 CHECKOUT LOCKED
+
+<small>
+You need ALL 24 birthday items in your cart!
+</small>
+
+</div>
+
+
+<div id="unlockedCheckout" class="unlocked hidden">
+
+<h3>
+🎉 CHECKOUT UNLOCKED 🎉
+</h3>
+
+<p>
+YOU GOT ALL 24!!!
+</p>
+
+<a
+id="paypalButton"
+href="#"
+target="_blank"
+class="paypal-button"
+>
+PAY WITH PAYPAL 💳
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- BIG BIRTHDAY CELEBRATION -->
+
+<div
+id="birthdayCelebration"
+class="celebration hidden"
+>
+
+<div id="confetti"></div>
+
+
+<div class="celebration-card">
+
+<div class="balloons-big">
+🎈 🎈 🎈
+</div>
+
+<div class="big-cake">
+🎂
+</div>
+
+<h2>
+
+HAPPY BIRTHDAY
+
+<br>
+
+<span>
+HASSAN!!!
+</span>
+
+</h2>
+
+<p>
+🎉 YOU UNLOCKED ALL 24 BIRTHDAY TREASURES 🎉
+</p>
+
+<div style="font-size:30px;margin:15px">
+💗 ✦ 🎁 ✦ 💗
+</div>
+
+<button id="continueToCheckout">
+TAKE ME TO CHECKOUT 🛒
+</button>
+
+</div>
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   PRODUCTS
+===================================================== */
+
+
+const PRODUCTS = [
+
+{
+id:1,
+name:"Delete One Screenshot",
+price:0.50,
+icon:"📸",
+description:"Choose ONE screenshot for me to delete. Gone. Forever."
+},
+
+{
+id:2,
+name:"I Will Do One Favor",
+price:1.00,
+icon:"🤝",
+description:"Redeem this for one reasonable favor of your choice."
+},
+
+{
+id:3,
+name:"Automatic Argument Victory",
+price:0.50,
+icon:"⚖️",
+description:"For one argument, you automatically win. No debate."
+},
+
+{
+id:4,
+name:"One-Time Yes Pass",
+price:1.50,
+icon:"✅",
+description:"I have to say yes to one reasonable request."
+},
+
+{
+id:5,
+name:"Mystery Product",
+price:0.50,
+icon:"🎁",
+description:"You bought a mystery. What you get is between you and the universe."
+},
+
+{
+id:6,
+name:"Get Out of Jail Free",
+price:1.00,
+icon:"🃏",
+description:"One time, you're completely off the hook. No questions asked."
+},
+
+{
+id:7,
+name:"One Custom Picture",
+price:1.00,
+icon:"🖼️",
+description:"I'll make you one custom picture of whatever you request."
+},
+
+{
+id:8,
+name:"Nickname for the Day",
+price:0.50,
+icon:"👑",
+description:"I'll call you whatever nickname you want for the entire day."
+},
+
+{
+id:9,
+name:"You Pick the Night Activity",
+price:0.50,
+icon:"🎮",
+description:"You choose what we do for our night activity."
+},
+
+{
+id:10,
+name:"First-Time Answer Pass",
+price:0.50,
+icon:"💬",
+description:"For one day, I answer your questions the first time you ask."
+},
+
+{
+id:11,
+name:"Embarrassing Photo Reveal",
+price:1.00,
+icon:"📷",
+description:"Unlock one embarrassing photo reveal. You have been warned."
+},
+
+{
+id:12,
+name:"Embarrassing Fan Edit Reveal",
+price:1.50,
+icon:"😭",
+description:"You get to see one embarrassing fan edit made just for you."
+},
+
+{
+id:13,
+name:"You Get the Last Word",
+price:0.50,
+icon:"🤐",
+description:"One argument where you get the final word."
+},
+
+{
+id:14,
+name:"Stay in FT the Whole Time",
+price:1.50,
+icon:"📱",
+description:"For one agreed-on activity, I stay in the FaceTime call the whole time."
+},
+
+{
+id:15,
+name:"No Scaring You at Night",
+price:1.00,
+icon:"🌙",
+description:"I will not scare you at night for one whole week."
+},
+
+{
+id:16,
+name:"Gratitude Paragraph",
+price:1.00,
+icon:"💌",
+description:"You get a whole paragraph about how grateful I am for you."
+},
+
+{
+id:17,
+name:"Custom Video",
+price:1.50,
+icon:"🎥",
+description:"I'll make you one custom video based on whatever you choose."
+},
+
+{
+id:18,
+name:"Emergency Compliment",
+price:0.50,
+icon:"💗",
+description:"Redeem anytime for an emergency compliment."
+},
+
+{
+id:19,
+name:"Rage Bait Pass",
+price:1.00,
+icon:"😈",
+description:"You get to rage bait me once and I can't do anything about it."
+},
+
+{
+id:20,
+name:"I Will Unowe You a Favor",
+price:1.00,
+icon:"🤝",
+description:"One favor I owe you gets officially cancelled."
+},
+
+{
+id:21,
+name:"The Foot Vid With Audio",
+price:1.50,
+icon:"🦶",
+description:"You get to see the foot vid I sent Richard — WITH audio."
+},
+
+{
+id:22,
+name:"I'll Admit You Were Right",
+price:0.50,
+icon:"🫡",
+description:"One time, I have to fully admit that you were right."
+},
+
+{
+id:23,
+name:"Forget About the Valentine's Day Situation",
+price:1.50,
+icon:"🕊️",
+description:"One official pass to forget about the Valentine's Day situation."
+},
+
+{
+id:24,
+name:"Anything You Want",
+price:5.00,
+icon:"🎂",
+description:"You get one reasonable birthday request. This is the BIG one."
+}
+
+];
+
+
+
+/* =====================================================
+   PUT YOUR PAYPAL LINK BETWEEN THE QUOTES BELOW
+===================================================== */
+
+
+const PAYPAL_LINK =
+"PASTE_YOUR_PAYPAL_LINK_HERE";
+
+
+
+/* =====================================================
+   CART
+===================================================== */
+
+
+let cart = new Set();
+
+
+
+const productsContainer =
+document.getElementById("products");
+
+
+
+function money(number){
+
+return number.toFixed(2);
+
+}
+
+
+
+function renderProducts(){
+
+productsContainer.innerHTML="";
+
+
+PRODUCTS.forEach(product=>{
+
+const card =
+document.createElement("article");
+
+card.className="product";
+
+card.dataset.id=product.id;
+
+
+card.innerHTML=`
+
+<div class="product-icon">
+${product.icon}
+</div>
+
+<div class="product-number">
+ITEM #${product.id}
+</div>
+
+<h3>
+${product.name}
+</h3>
+
+<div class="product-bottom">
+
+<span class="price">
+$${money(product.price)}
+</span>
+
+<button class="view-button">
+VIEW
+</button>
+
+</div>
+
+`;
+
+
+productsContainer.appendChild(card);
+
+});
+
+}
+
+
+
+function updateCart(){
+
+let total=0;
+
+
+cart.forEach(id=>{
+
+total += PRODUCTS[id-1].price;
+
+});
+
+
+document.getElementById("cartCount").textContent =
+cart.size;
+
+
+document.getElementById("cartTotal").textContent =
+money(total);
+
+
+document.getElementById("cartPopupTotal").textContent =
+money(total);
+
+
+
+const locked =
+document.getElementById("lockedCheckout");
+
+
+const unlocked =
+document.getElementById("unlockedCheckout");
+
+
+if(cart.size===24){
+
+locked.classList.add("hidden");
+
+unlocked.classList.remove("hidden");
+
+document.getElementById("cartMessage").textContent =
+"🎉 All 24 items are in the cart!";
+
+}else{
+
+locked.classList.remove("hidden");
+
+unlocked.classList.add("hidden");
+
+document.getElementById("cartMessage").textContent =
+`You have ${cart.size}/24 items. You need ALL 24 to unlock checkout!`;
+
+}
+
+
+
+const paypal =
+document.getElementById("paypalButton");
+
+
+paypal.href=PAYPAL_LINK;
+
+
+
+const cartItems =
+document.getElementById("cartItems");
+
+
+cartItems.innerHTML="";
+
+
+cart.forEach(id=>{
+
+const product =
+PRODUCTS[id-1];
+
+
+const row =
+document.createElement("div");
+
+row.className="cart-row";
+
+
+row.innerHTML=`
+
+<span>
+${product.icon}
+${product.name}
+</span>
+
+<strong>
+$${money(product.price)}
+</strong>
+
+`;
+
+
+cartItems.appendChild(row);
+
+});
+
+}
+
+
+
+/* =====================================================
+   OPEN PRODUCT
+===================================================== */
+
+
+function openProduct(id){
+
+const product =
+PRODUCTS[id-1];
+
+
+document.getElementById("popupIcon").textContent =
+product.icon;
+
+
+document.getElementById("popupNumber").textContent =
+`ITEM #${product.id}`;
+
+
+document.getElementById("popupTitle").textContent =
+product.name;
+
+
+document.getElementById("popupPrice").textContent =
+`$${money(product.price)}`;
+
+
+document.getElementById("popupDescription").textContent =
+product.description;
+
+
+
+const button =
+document.getElementById("addToCartButton");
+
+
+if(cart.has(id)){
+
+button.textContent =
+"ALREADY IN CART ✓";
+
+}else{
+
+button.textContent =
+"ADD TO CART 🛒";
+
+}
+
+
+
+button.onclick=function(){
+
+if(!cart.has(id)){
+
+cart.add(id);
+
+updateCart();
+
+
+document
+.getElementById("productOverlay")
+.classList.remove("open");
+
+
+if(cart.size===24){
+
+birthdayCelebration();
+
+}
+
+}
+
+};
+
+
+document
+.getElementById("productOverlay")
+.classList.add("open");
+
+}
+
+
+
+/* =====================================================
+   BIRTHDAY CELEBRATION
+===================================================== */
+
+
+function birthdayCelebration(){
+
+const celebration =
+document.getElementById("birthdayCelebration");
+
+
+celebration.classList.remove("hidden");
+
+
+const confetti =
+document.getElementById("confetti");
+
+
+confetti.innerHTML="";
+
+
+const pieces=[
+"🎉",
+"💗",
+"⭐",
+"🎈",
+"✨",
+"🎁",
+"💜"
+];
+
+
+for(let i=0;i<100;i++){
+
+const piece =
+document.createElement("span");
+
+
+piece.className="confetti-piece";
+
+
+piece.textContent =
+pieces[
+Math.floor(
+Math.random()*pieces.length
+)
+];
+
+
+piece.style.left =
+Math.random()*100+"vw";
+
+
+piece.style.animationDuration =
+(2.5+Math.random()*3)+"s";
+
+
+piece.style.animationDelay =
+Math.random()*1.5+"s";
+
+
+confetti.appendChild(piece);
+
+}
+
+}
+
+
+
+/* =====================================================
+   PRODUCT CLICK
+===================================================== */
+
+
+productsContainer.addEventListener(
+"click",
+function(event){
+
+const card =
+event.target.closest(".product");
+
+
+if(!card)return;
+
+
+openProduct(
+Number(card.dataset.id)
+);
+
+}
+);
+
+
+
+/* =====================================================
+   CART BUTTON
+===================================================== */
+
+
+document
+.getElementById("cartButton")
+.addEventListener(
+"click",
+function(){
+
+updateCart();
+
+document
+.getElementById("cartOverlay")
+.classList.add("open");
+
+}
+);
+
+
+
+/* =====================================================
+   CLOSE BUTTONS
+===================================================== */
+
+
+document
+.getElementById("closeProduct")
+.addEventListener(
+"click",
+function(){
+
+document
+.getElementById("productOverlay")
+.classList.remove("open");
+
+}
+);
+
+
+document
+.getElementById("closeCart")
+.addEventListener(
+"click",
+function(){
+
+document
+.getElementById("cartOverlay")
+.classList.remove("open");
+
+}
+);
+
+
+
+/* =====================================================
+   CONTINUE TO CHECKOUT
+===================================================== */
+
+
+document
+.getElementById("continueToCheckout")
+.addEventListener(
+"click",
+function(){
+
+document
+.getElementById("birthdayCelebration")
+.classList.add("hidden");
+
+
+updateCart();
+
+
+document
+.getElementById("cartOverlay")
+.classList.add("open");
+
+}
+);
+
+
+
+/* =====================================================
+   START WEBSITE
+===================================================== */
+
+
+renderProducts();
+
+updateCart();
+
+</script>
+
+</body>
+</html>
