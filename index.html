@@ -570,10 +570,10 @@ grid-template-columns:1fr;
 </head>
 
 <body>
-<audio id="bgMusic" autoplay loop>
+
+<audio id="birthdayMusic" loop>
 <source src="birthday.mp3" type="audio/mpeg">
 </audio>
-
 
 <div class="ticker">
 🎈 HAPPY BIRTHDAY HASSAN 🎈 ✦ 24 SPECIAL BIRTHDAY ITEMS ✦ 🎈 HAPPY BIRTHDAY HASSAN 🎈
@@ -835,6 +835,36 @@ TAKE ME TO CHECKOUT 🛒
 
 
 /* =====================================================
+   BIRTHDAY MUSIC
+===================================================== */
+
+const birthdayMusic =
+document.getElementById("birthdayMusic");
+
+let musicStarted = false;
+
+function startBirthdayMusic(){
+
+if(musicStarted)return;
+
+birthdayMusic.volume = 0.5;
+
+birthdayMusic.play().then(()=>{
+
+musicStarted = true;
+
+}).catch(()=>{});
+
+}
+
+document.addEventListener(
+"click",
+startBirthdayMusic,
+{once:true}
+);
+
+
+/* =====================================================
    PRODUCTS
 ===================================================== */
 
@@ -1055,10 +1085,8 @@ const PAYPAL_LINK =
 let cart = {};
 
 
-
 const productsContainer =
 document.getElementById("products");
-
 
 
 function money(number){
@@ -1068,25 +1096,29 @@ return number.toFixed(2);
 }
 
 
-
 function cartCountTotal(){
 
-return Object.values(cart).reduce((sum, quantity)=>sum + quantity, 0);
+return Object.values(cart).reduce(
+(sum, quantity)=>sum + quantity,
+0
+);
 
 }
-
 
 
 function cartSubtotal(){
 
-return Object.entries(cart).reduce((sum,[id,quantity])=>{
+return Object.entries(cart).reduce(
+(sum,[id,quantity])=>{
 
-return sum + PRODUCTS[Number(id)-1].price * quantity;
+return sum +
+PRODUCTS[Number(id)-1].price * quantity;
 
-},0);
+},
+0
+);
 
 }
-
 
 
 function renderProducts(){
@@ -1140,33 +1172,40 @@ productsContainer.appendChild(card);
 }
 
 
-
 function updateCart(){
 
-const itemCount = cartCountTotal();
-const subtotal = cartSubtotal();
-const finalTotal = Math.min(subtotal,24);
-const couponAmount = Math.max(0,subtotal-24);
+const itemCount =
+cartCountTotal();
+
+const subtotal =
+cartSubtotal();
+
+const finalTotal =
+Math.min(subtotal,24);
+
+const couponAmount =
+Math.max(0,subtotal-24);
 
 
-document.getElementById("cartCount").textContent =
-itemCount;
+document.getElementById("cartCount")
+.textContent = itemCount;
 
 
-document.getElementById("cartTotal").textContent =
-money(subtotal);
+document.getElementById("cartTotal")
+.textContent = money(subtotal);
 
 
-document.getElementById("cartPopupTotal").textContent =
-money(subtotal);
+document.getElementById("cartPopupTotal")
+.textContent = money(subtotal);
 
 
-document.getElementById("cartFinalTotal").textContent =
-money(finalTotal);
+document.getElementById("cartFinalTotal")
+.textContent = money(finalTotal);
 
 
 const couponRow =
 document.getElementById("couponRow");
+
 
 if(couponAmount>0){
 
@@ -1198,7 +1237,8 @@ locked.classList.add("hidden");
 
 unlocked.classList.remove("hidden");
 
-document.getElementById("cartMessage").textContent =
+document.getElementById("cartMessage")
+.textContent =
 "🎉 You have exactly 24 things in the cart!";
 
 }else{
@@ -1207,7 +1247,8 @@ locked.classList.remove("hidden");
 
 unlocked.classList.add("hidden");
 
-document.getElementById("cartMessage").textContent =
+document.getElementById("cartMessage")
+.textContent =
 `You have ${itemCount}/24 things. Add ${24-itemCount} more to unlock checkout!`;
 
 }
@@ -1216,18 +1257,18 @@ document.getElementById("cartMessage").textContent =
 const paypal =
 document.getElementById("paypalButton");
 
-
-paypal.href=PAYPAL_LINK;
+paypal.href =
+PAYPAL_LINK;
 
 
 const cartItems =
 document.getElementById("cartItems");
 
-
 cartItems.innerHTML="";
 
 
-Object.entries(cart).forEach(([id,quantity])=>{
+Object.entries(cart).forEach(
+([id,quantity])=>{
 
 const product =
 PRODUCTS[Number(id)-1];
@@ -1251,9 +1292,25 @@ ${product.name}
 <div class="cart-row-right">
 
 <div class="qty-controls">
-<button class="qty-button" data-action="decrease" data-id="${product.id}">−</button>
-<span class="qty-number">${quantity}</span>
-<button class="qty-button" data-action="increase" data-id="${product.id}">+</button>
+
+<button
+class="qty-button"
+data-action="decrease"
+data-id="${product.id}">
+−
+</button>
+
+<span class="qty-number">
+${quantity}
+</span>
+
+<button
+class="qty-button"
+data-action="increase"
+data-id="${product.id}">
++
+</button>
+
 </div>
 
 <strong>
@@ -1284,25 +1341,29 @@ const product =
 PRODUCTS[id-1];
 
 
-document.getElementById("popupIcon").textContent =
+document.getElementById("popupIcon")
+.textContent =
 product.icon;
 
 
-document.getElementById("popupNumber").textContent =
+document.getElementById("popupNumber")
+.textContent =
 `ITEM #${product.id}`;
 
 
-document.getElementById("popupTitle").textContent =
+document.getElementById("popupTitle")
+.textContent =
 product.name;
 
 
-document.getElementById("popupPrice").textContent =
+document.getElementById("popupPrice")
+.textContent =
 `$${money(product.price)}`;
 
 
-document.getElementById("popupDescription").textContent =
+document.getElementById("popupDescription")
+.textContent =
 product.description;
-
 
 
 const button =
@@ -1327,10 +1388,11 @@ button.textContent =
 }
 
 
-
 button.onclick=function(){
 
-const currentCount = cartCountTotal();
+const currentCount =
+cartCountTotal();
+
 
 if(currentCount>=24){
 
@@ -1338,13 +1400,17 @@ return;
 
 }
 
+
 if(product.id===24 && cart[24]){
 
 return;
 
 }
 
-cart[id] = (cart[id] || 0) + 1;
+
+cart[id] =
+(cart[id] || 0) + 1;
+
 
 updateCart();
 
@@ -1379,10 +1445,14 @@ document
 function birthdayCelebration(){
 
 const celebration =
-document.getElementById("birthdayCelebration");
+document.getElementById(
+"birthdayCelebration"
+);
 
 
-celebration.classList.remove("hidden");
+celebration.classList.remove(
+"hidden"
+);
 
 
 const confetti =
@@ -1409,7 +1479,8 @@ const piece =
 document.createElement("span");
 
 
-piece.className="confetti-piece";
+piece.className =
+"confetti-piece";
 
 
 piece.textContent =
@@ -1478,6 +1549,7 @@ function(){
 
 updateCart();
 
+
 document
 .getElementById("cartOverlay")
 .classList.add("open");
@@ -1498,18 +1570,26 @@ document
 "click",
 function(event){
 
-const button = event.target.closest(".qty-button");
+const button =
+event.target.closest(".qty-button");
+
 
 if(!button)return;
 
-const id = Number(button.dataset.id);
-const action = button.dataset.action;
+
+const id =
+Number(button.dataset.id);
+
+const action =
+button.dataset.action;
+
 
 if(action==="increase"){
 
 if(cartCountTotal()<24){
 
-cart[id] = (cart[id] || 0) + 1;
+cart[id] =
+(cart[id] || 0) + 1;
 
 }
 
@@ -1528,6 +1608,7 @@ delete cart[id];
 }
 
 }
+
 
 updateCart();
 
