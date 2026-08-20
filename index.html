@@ -67,8 +67,19 @@ text-shadow:4px 4px white;
 margin:5px 0 15px;
 }
 
-.hero h1 span{
+.hero h1 span.title-purple{
+color:#7650a5;
+}
+
+.hero h1 span.title-pink{
 color:#f04d99;
+}
+
+.love-message{
+position:relative;
+z-index:2;
+margin:28px 0 18px;
+line-height:1.4;
 }
 
 .hero p{
@@ -588,11 +599,11 @@ grid-template-columns:1fr;
 <div class="cake">🎂</div>
 
 <h1>
-Hassan's<br>
-<span>Birthday Shop</span>
+<span class="title-purple">Hassan's 24th</span><br>
+<span class="title-pink">Birthday Shop</span>
 </h1>
 
-<p>
+<p class="love-message">
 I love you! ˗ˋˏ ♡ ˎˊ˗
 </p>
 
@@ -669,7 +680,7 @@ Purchases are final because this is a very serious birthday business.
 <footer>
 
 made with an unreasonable amount of birthday spirit 💗
-• Hassan's Birthday Shop © 2026
+• Hassan's 24th Birthday Shop © 2026
 
 </footer>
 
@@ -1180,11 +1191,9 @@ cartCountTotal();
 const subtotal =
 cartSubtotal();
 
-const finalTotal =
-Math.min(subtotal,24);
-
-const couponAmount =
-Math.max(0,subtotal-24);
+const unlocked = itemCount === 24;
+const finalTotal = unlocked ? 5 : subtotal;
+const couponAmount = unlocked ? Math.max(0,subtotal-5) : 0;
 
 
 document.getElementById("cartCount")
@@ -1212,7 +1221,7 @@ if(couponAmount>0){
 couponRow.classList.remove("hidden");
 
 couponRow.textContent =
-`🎟️ BIRTHDAY COUPON: -$${money(couponAmount)} • Your total is capped at $24.00!`;
+`🎟️ HASSAN'S BIRTHDAY COUPON: -$${money(couponAmount)} • Because it's your birthday, your 24-item order is only $5.00 💗`;
 
 }else{
 
