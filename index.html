@@ -67,24 +67,16 @@ text-shadow:4px 4px white;
 margin:5px 0 15px;
 }
 
-.hero h1 span.title-purple{
-color:#7650a5;
-}
-
-.hero h1 span.title-pink{
+.hero h1 .pink-title{
 color:#f04d99;
-}
-
-.love-message{
-position:relative;
-z-index:2;
-margin:28px 0 18px;
-line-height:1.4;
 }
 
 .hero p{
 font-size:19px;
 font-weight:600;
+margin:25px 0 20px;
+position:relative;
+z-index:2;
 }
 
 .pills{
@@ -582,6 +574,7 @@ grid-template-columns:1fr;
 
 <body>
 
+<!-- BIRTHDAY MUSIC -->
 <audio id="birthdayMusic" loop>
 <source src="birthday.mp3" type="audio/mpeg">
 </audio>
@@ -589,7 +582,6 @@ grid-template-columns:1fr;
 <div class="ticker">
 🎈 HAPPY BIRTHDAY HASSAN 🎈 ✦ 24 SPECIAL BIRTHDAY ITEMS ✦ 🎈 HAPPY BIRTHDAY HASSAN 🎈
 </div>
-
 
 <header class="hero">
 
@@ -599,11 +591,11 @@ grid-template-columns:1fr;
 <div class="cake">🎂</div>
 
 <h1>
-<span class="title-purple">Hassan's 24th</span><br>
-<span class="title-pink">Birthday Shop</span>
+Hassan's 24th<br>
+<span class="pink-title">Birthday Shop</span>
 </h1>
 
-<p class="love-message">
+<p>
 I love you! ˗ˋˏ ♡ ˎˊ˗
 </p>
 
@@ -615,9 +607,7 @@ I love you! ˗ˋˏ ♡ ˎˊ˗
 
 </header>
 
-
 <main>
-
 
 <div class="notice">
 
@@ -630,7 +620,6 @@ You can pick any quantities you want! You just need <strong>24 TOTAL THINGS</str
 
 </div>
 
-
 <div class="shop-top">
 
 <div>
@@ -642,7 +631,6 @@ yes, these are somehow real products
 </small>
 
 </div>
-
 
 <button id="cartButton">
 
@@ -658,9 +646,7 @@ yes, these are somehow real products
 
 </div>
 
-
 <section id="products"></section>
-
 
 <div class="rules">
 
@@ -673,9 +659,7 @@ Purchases are final because this is a very serious birthday business.
 
 </div>
 
-
 </main>
-
 
 <footer>
 
@@ -683,7 +667,6 @@ made with an unreasonable amount of birthday spirit 💗
 • Hassan's 24th Birthday Shop © 2026
 
 </footer>
-
 
 
 <!-- PRODUCT POPUP -->
@@ -713,7 +696,6 @@ ADD TO CART 🛒
 </div>
 
 </div>
-
 
 
 <!-- CART -->
@@ -791,7 +773,6 @@ PAY WITH PAYPAL 💳
 </div>
 
 
-
 <!-- BIG BIRTHDAY CELEBRATION -->
 
 <div
@@ -800,7 +781,6 @@ class="celebration hidden"
 >
 
 <div id="confetti"></div>
-
 
 <div class="celebration-card">
 
@@ -841,9 +821,7 @@ TAKE ME TO CHECKOUT 🛒
 </div>
 
 
-
 <script>
-
 
 /* =====================================================
    BIRTHDAY MUSIC
@@ -878,7 +856,6 @@ startBirthdayMusic,
 /* =====================================================
    PRODUCTS
 ===================================================== */
-
 
 const PRODUCTS = [
 
@@ -1077,24 +1054,19 @@ description:"You get one reasonable birthday request. ANYTHING YOU WANT."
 ];
 
 
-
 /* =====================================================
-   PUT YOUR PAYPAL LINK BETWEEN THE QUOTES BELOW
+   PAYPAL LINK
 ===================================================== */
-
 
 const PAYPAL_LINK =
 "https://py.pl/ycjRbCJ4pd4jXC7GQ05qfA";
-
 
 
 /* =====================================================
    CART
 ===================================================== */
 
-
 let cart = {};
-
 
 const productsContainer =
 document.getElementById("products");
@@ -1136,7 +1108,6 @@ function renderProducts(){
 
 productsContainer.innerHTML="";
 
-
 PRODUCTS.forEach(product=>{
 
 const card =
@@ -1145,7 +1116,6 @@ document.createElement("article");
 card.className="product";
 
 card.dataset.id=product.id;
-
 
 card.innerHTML=`
 
@@ -1175,7 +1145,6 @@ VIEW
 
 `;
 
-
 productsContainer.appendChild(card);
 
 });
@@ -1191,9 +1160,25 @@ cartCountTotal();
 const subtotal =
 cartSubtotal();
 
-const unlocked = itemCount === 24;
-const finalTotal = unlocked ? 5 : subtotal;
-const couponAmount = unlocked ? Math.max(0,subtotal-5) : 0;
+
+/*
+=====================================================
+BIRTHDAY COUPON
+
+Once Hassan has exactly 24 things,
+his entire birthday order becomes $5.
+=====================================================
+*/
+
+const couponAmount =
+itemCount === 24
+? Math.max(0,subtotal - 5)
+: 0;
+
+const finalTotal =
+itemCount === 24
+? 5
+: subtotal;
 
 
 document.getElementById("cartCount")
@@ -1216,12 +1201,12 @@ const couponRow =
 document.getElementById("couponRow");
 
 
-if(couponAmount>0){
+if(itemCount === 24){
 
 couponRow.classList.remove("hidden");
 
 couponRow.textContent =
-`🎟️ HASSAN'S BIRTHDAY COUPON: -$${money(couponAmount)} • Because it's your birthday, your 24-item order is only $5.00 💗`;
+`🎟️ HASSAN'S BIRTHDAY COUPON: -$${money(couponAmount)} • Because it's your birthday, you only pay $5.00 💗`;
 
 }else{
 
@@ -1330,7 +1315,6 @@ $${money(product.price * quantity)}
 
 `;
 
-
 cartItems.appendChild(row);
 
 });
@@ -1338,11 +1322,9 @@ cartItems.appendChild(row);
 }
 
 
-
 /* =====================================================
    OPEN PRODUCT
 ===================================================== */
-
 
 function openProduct(id){
 
@@ -1445,11 +1427,9 @@ document
 }
 
 
-
 /* =====================================================
    BIRTHDAY CELEBRATION
 ===================================================== */
-
 
 function birthdayCelebration(){
 
@@ -1519,11 +1499,9 @@ confetti.appendChild(piece);
 }
 
 
-
 /* =====================================================
    PRODUCT CLICK
 ===================================================== */
-
 
 productsContainer.addEventListener(
 "click",
@@ -1544,11 +1522,9 @@ Number(card.dataset.id)
 );
 
 
-
 /* =====================================================
    CART BUTTON
 ===================================================== */
-
 
 document
 .getElementById("cartButton")
@@ -1558,7 +1534,6 @@ function(){
 
 updateCart();
 
-
 document
 .getElementById("cartOverlay")
 .classList.add("open");
@@ -1567,11 +1542,9 @@ document
 );
 
 
-
 /* =====================================================
    CART QUANTITY CONTROLS
 ===================================================== */
-
 
 document
 .getElementById("cartItems")
@@ -1625,11 +1598,9 @@ updateCart();
 );
 
 
-
 /* =====================================================
    CLOSE BUTTONS
 ===================================================== */
-
 
 document
 .getElementById("closeProduct")
@@ -1659,11 +1630,9 @@ document
 );
 
 
-
 /* =====================================================
    CONTINUE TO CHECKOUT
 ===================================================== */
-
 
 document
 .getElementById("continueToCheckout")
@@ -1687,11 +1656,9 @@ document
 );
 
 
-
 /* =====================================================
    START WEBSITE
 ===================================================== */
-
 
 renderProducts();
 
